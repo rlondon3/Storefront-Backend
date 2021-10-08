@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "jasmine-ts",
-    "tsc": "tsc"
+    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+    "tsc": "tsc",
+    "migrate": "db-migrate --env test up && db-migrate up"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "typescript": "^4.4.3"
   },
   "devDependencies": {
+    "@types/jasmine": "^3.9.1",
     "jasmine": "^3.9.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.4.0",
