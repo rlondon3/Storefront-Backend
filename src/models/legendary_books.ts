@@ -1,4 +1,5 @@
 import client from '../database';
+import { PoolClient } from 'pg';
 
 export type Book = {
   title: string;
@@ -7,13 +8,13 @@ export type Book = {
   published_era: string;
   pages: number;
   last_known_citing: string;
-  id: number;
+  id?: number;
 };
 
 export class LegendaryBookStore {
   async index(): Promise<Book[]> {
     try {
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const sql = 'SELECT * FROM legendary_fighting_books';
       const res = await conn.query(sql);
       conn.release();
@@ -25,21 +26,21 @@ export class LegendaryBookStore {
 
   async show(id: number): Promise<Book> {
     try {
-      const conn = await client.connect();
-      const sql = 'SELECT * FROM legendary_fighting_books';
-      const res = await conn.query(sql);
+      const sql = 'SELECT * FROM legendary_fighting_books WHERE id=($1)';
+      const conn: PoolClient = await client.connect();
+      const res = await conn.query(sql, [id]);
       conn.release();
       return res.rows[0];
     } catch (err) {
-      throw new Error(`Cannot find book: ${err}`);
+      throw new Error(`Cannot find ${err}`);
     }
   }
 
   async create(book: Book): Promise<Book> {
     try {
-      const conn = await client.connect();
       const sql =
         'INSERT INTO legendary_fighting_books (title, author, synopsis, published_era, pages, last_known_citing) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [
         book.title,
         book.author,
@@ -56,9 +57,9 @@ export class LegendaryBookStore {
   }
   async update(book: Book): Promise<Book> {
     try {
-      const conn = await client.connect();
       const sql =
         'UPDATE legendary_fighting_books SET title=($1), author=($2), synopsis=($3), published_era=($4), pages=($5), last_known_citing=($6) WHERE id=($7) RETURNING *';
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [
         book.title,
         book.author,
@@ -76,7 +77,7 @@ export class LegendaryBookStore {
   }
   async delete(id: number): Promise<Book> {
     try {
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const sql = 'DELETE FROM legendary_fighting_books WHERE id=($1)';
       const res = await conn.query(sql, [id]);
       conn.release();
