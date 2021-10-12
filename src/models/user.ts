@@ -1,6 +1,7 @@
 import client from '../database';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { PoolClient } from 'pg';
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ export class UserStore {
   async index(): Promise<User[]> {
     try {
       const sql = 'SELECT * FROM users';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql);
       conn.release();
       return res.rows;
@@ -27,7 +28,7 @@ export class UserStore {
   async show(id: number): Promise<User> {
     try {
       const sql = 'SELECT * FROM users WHERE id=($1)';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [id]);
       conn.release();
       return res.rows[0];
@@ -39,7 +40,7 @@ export class UserStore {
     try {
       const sql =
         'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const hash = bcrypt.hashSync(
         usr.password + BCRYPT_PASSWORD,
         parseInt(SALT_ROUNDS as unknown as string)
@@ -55,7 +56,7 @@ export class UserStore {
     try {
       const sql =
         'UPDATE users SET username=($1), password=($2) WHERE id=($3) RETURNING *';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const hash = bcrypt.hashSync(
         usr.password + BCRYPT_PASSWORD,
         parseInt(SALT_ROUNDS as unknown as string)
@@ -70,7 +71,7 @@ export class UserStore {
   async delete(id: number): Promise<User> {
     try {
       const sql = 'DELETE FROM users WHERE id=($1)';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [id]);
       conn.release();
       return res.rows[0];
@@ -81,7 +82,7 @@ export class UserStore {
   async authenticate(username: string, password: string): Promise<User | null> {
     try {
       const sql = 'SELECT * FROM users WHERE username=($1)';
-      const conn = await client.connect();
+      const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [username]);
       if (res.rows.length) {
         const user = res.rows[0];

@@ -1,1 +1,1 @@
-DROP TABLE legendary_fighting_books
+DROP TABLE legendary_fighting_books;

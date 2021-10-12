@@ -3,7 +3,6 @@ import { Product, ProductStore } from '../products';
 const store = new ProductStore();
 
 describe('Legendary Product Model', () => {
-  //methods
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -24,7 +23,6 @@ describe('Legendary Product Model', () => {
     expect(store.update).toBeDefined();
   });
 
-  //functionality
   it('create method adds product', async () => {
     const res = await store.create({
       name: 'Iron Manacles',

@@ -6,7 +6,8 @@
     {
       "name": "jasmine-spec-reporter#SpecReporter",
       "options": {
-        "displayStacktrace": "all"
+        "displayStacktrace": "all",
+        "displaySuccessful": true
       }
     }
   ],

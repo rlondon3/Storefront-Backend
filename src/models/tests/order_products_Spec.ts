@@ -1,8 +1,8 @@
-import { User, UserStore } from '../user';
+import { Order, OrderStore } from '../order_products';
 
-const store = new UserStore();
+const store = new OrderStore();
 
-describe('Legendary User Model', () => {
+describe('Legendary Order Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -23,21 +23,30 @@ describe('Legendary User Model', () => {
     expect(store.update).toBeDefined();
   });
 
-  it('create method adds user', async () => {
+  it('create method adds order', async () => {
     const res = await store.create({
-      username: 'talentedBoxer',
-      password: 'NoShadowKick',
+      user_id: 1,
+      order_status: 'active',
     });
-    expect(res).toBeDefined();
+    expect(res).toEqual({
+      id: 1,
+      user_id: 1,
+      order_status: 'active',
+    });
   });
 
-  it('index method should return users', async () => {
+  it('index method should return orders', async () => {
     const res = await store.index();
-    expect(res).toHaveSize(1);
-    expect(res[0].username).toEqual('talentedBoxer');
+    expect(res).toEqual([
+      {
+        id: 1,
+        user_id: 1,
+        order_status: 'active',
+      },
+    ]);
   });
 
-  it('delete method should delete the user', async () => {
+  it('delete method should delete the order', async () => {
     store.delete(1);
     const res = await store.index();
     expect(res[0].id).toEqual(1);

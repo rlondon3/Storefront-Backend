@@ -3,7 +3,6 @@ import { Book, LegendaryBookStore } from '../legendary_books';
 const store = new LegendaryBookStore();
 
 describe('Legendary Book Model', () => {
-  //methods
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -24,7 +23,6 @@ describe('Legendary Book Model', () => {
     expect(store.update).toBeDefined();
   });
 
-  //functionality
   it('create method adds books', async () => {
     const res = await store.create({
       title: 'Fist and Intent Boxing',
