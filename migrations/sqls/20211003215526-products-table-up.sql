@@ -1,1 +1,1 @@
-CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR(100), price DECIMAL(5,2));
+CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR(100), description VARCHAR(250), price DECIMAL(5,2));

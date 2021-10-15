@@ -102,7 +102,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 newUser = _a.sent();
                 token = jsonwebtoken_1["default"].sign({
                     user: newUser
-                }, process.env.TOKEN_SECRET);
+                }, "" + process.env.TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
@@ -175,7 +175,7 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 authUser = _a.sent();
                 token = jsonwebtoken_1["default"].sign({
                     user: authUser
-                }, process.env.TOKEN_SECRET);
+                }, "" + process.env.TOKEN_SECRET);
                 res.json(token);
                 return [3 /*break*/, 3];
             case 2:

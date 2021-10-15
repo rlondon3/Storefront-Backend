@@ -1,19 +1,22 @@
-import jsonwebtoken from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import { User } from '../models/user';
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { Request, Response, NextFunction } from "express";
+import { User } from "../models/user";
+
+dotenv.config();
 
 interface TokenInterface {
   user: User;
-  id: number;
+  iat: number;
 }
 
 export const authToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHead = req.headers.authorization;
-    const token = (authHead as string).split('')[1];
-    const decoded = jsonwebtoken.verify(
+    const token = (authHead as string).split(" ")[1];
+    const decoded = jwt.verify(
       token,
-      process.env.TOKEN_SECRET as string
+      `${process.env.TOKEN_SECRET}` as jwt.Secret
     );
     next();
   } catch (err) {
@@ -25,14 +28,14 @@ export const authToken = (req: Request, res: Response, next: NextFunction) => {
 export const authUserId = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHead = req.headers.authorization;
-    const token = (authHead as string).split('')[1];
-    const decoded = jsonwebtoken.verify(
+    const token = (authHead as string).split(" ")[1];
+    const decoded = jwt.verify(
       token,
-      process.env.TOKEN_SECRET as string
+      `${process.env.TOKEN_SECRET}` as jwt.Secret
     );
     const id = (decoded as TokenInterface).user.id;
     if (id !== parseInt(req.params.id)) {
-      throw new Error('ID is invalid');
+      throw new Error("ID is invalid");
     }
     next();
   } catch (err) {

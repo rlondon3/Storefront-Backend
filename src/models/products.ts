@@ -4,6 +4,7 @@ import { PoolClient } from 'pg';
 export type Product = {
   id?: number;
   name: string;
+  description: string;
   price: number;
 };
 
@@ -33,7 +34,7 @@ export class ProductStore {
   async create(product: Product): Promise<Product> {
     try {
       const sql =
-        'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *';
+        'INSERT INTO products (name, description, price) VALUES ($1, $2, $3) RETURNING *';
       const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [product.name, product.price]);
       conn.release();
@@ -45,10 +46,11 @@ export class ProductStore {
   async update(product: Product): Promise<Product> {
     try {
       const sql =
-        'UPDATE products SET name=($1), price=($2) WHERE id=($3) RETURNING *';
+        'UPDATE products SET name=($1), description=($2) price=($3) WHERE id=($4) RETURNING *';
       const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [
         product.name,
+        product.description,
         product.price,
         product.id,
       ]);

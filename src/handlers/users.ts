@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { User, UserStore } from '../models/user';
-import jsonwebtoken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { authToken, authUserId } from '../middleware/authenticate';
 
 dotenv.config();
@@ -35,11 +35,11 @@ const create = async (req: Request, res: Response) => {
   };
   try {
     const newUser = await store.create(user);
-    const token = jsonwebtoken.sign(
+    const token = jwt.sign(
       {
         user: newUser,
       },
-      process.env.TOKEN_SECRET as jsonwebtoken.Secret
+      `${process.env.TOKEN_SECRET}` as jwt.Secret
     );
     res.json(token);
   } catch (err) {
@@ -56,11 +56,11 @@ const update = async (req: Request, res: Response) => {
   };
   try {
     const updates = await store.update(user);
-    const token = jsonwebtoken.sign(
+    const token = jwt.sign(
       {
         user: updates,
       },
-      process.env.TOKEN_SECRET as jsonwebtoken.Secret
+      process.env.TOKEN_SECRET as jwt.Secret
     );
     res.json(token);
   } catch (err) {
@@ -85,11 +85,11 @@ const authenticate = async (req: Request, res: Response) => {
       req.body.username,
       req.body.password
     );
-    const token = jsonwebtoken.sign(
+    const token = jwt.sign(
       {
         user: authUser,
       },
-      process.env.TOKEN_SECRET as jsonwebtoken.Secret
+      `${process.env.TOKEN_SECRET}` as jwt.Secret
     );
     res.json(token);
   } catch (err) {
