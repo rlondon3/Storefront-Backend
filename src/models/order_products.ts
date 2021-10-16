@@ -3,14 +3,14 @@ import { PoolClient } from 'pg';
 
 export type Order = {
   id?: number;
-  user_id: number;
+  user_id: string;
   order_status: string;
 };
 
 export type ProductOrdered = {
   quantity: number;
-  product_id: number;
-  order_id: number;
+  product_id: string;
+  order_id: string;
   id?: number;
 };
 

@@ -1,8 +1,8 @@
-import { User, UserStore } from '../user';
+import { UserStore } from '../user';
 
 const store = new UserStore();
 
-describe('Legendary User Model', () => {
+describe('User Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -38,8 +38,8 @@ describe('Legendary User Model', () => {
   });
 
   it('delete method should delete the user', async () => {
-    store.delete(1);
+    await store.delete(1);
     const res = await store.index();
-    expect(res[0].id).toEqual(1);
+    expect(res).toEqual([]);
   });
 });

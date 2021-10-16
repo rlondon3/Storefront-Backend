@@ -5,7 +5,7 @@ import { PoolClient } from 'pg';
 
 dotenv.config();
 
-const { SALT_ROUNDS, BCRYPT_PASSWORD } = process.env;
+const { SALT_ROUNDS, PEPPER } = process.env;
 
 export type User = {
   id?: number;
@@ -38,12 +38,12 @@ export class UserStore {
   }
   async create(usr: User): Promise<User> {
     try {
+      const conn: PoolClient = await client.connect();
       const sql =
         'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *';
-      const conn: PoolClient = await client.connect();
       const hash = bcrypt.hashSync(
-        usr.password + BCRYPT_PASSWORD,
-        parseInt(SALT_ROUNDS as unknown as string)
+        usr.password + `${PEPPER}.process.env`,
+        parseInt(`${SALT_ROUNDS}.process.env` as string)
       );
       const res = await conn.query(sql, [usr.username, hash]);
       conn.release();
@@ -58,7 +58,7 @@ export class UserStore {
         'UPDATE users SET username=($1), password=($2) WHERE id=($3) RETURNING *';
       const conn: PoolClient = await client.connect();
       const hash = bcrypt.hashSync(
-        usr.password + BCRYPT_PASSWORD,
+        usr.password + PEPPER,
         parseInt(SALT_ROUNDS as unknown as string)
       );
       const res = await conn.query(sql, [usr.username, hash]);
@@ -87,7 +87,7 @@ export class UserStore {
       if (res.rows.length) {
         const user = res.rows[0];
         console.log(user);
-        if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)) {
+        if (bcrypt.compareSync(password + PEPPER, user.password)) {
           return user;
         }
       }

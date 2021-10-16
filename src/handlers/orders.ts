@@ -25,7 +25,7 @@ const show = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   const order: Order = {
-    user_id: parseInt(req.body.user_id),
+    user_id: req.body.user_id,
     order_status: 'active',
   };
   try {
@@ -65,8 +65,8 @@ const deletes = async (req: Request, res: Response) => {
 const product = async (req: Request, res: Response) => {
   const productOrder: ProductOrdered = {
     quantity: parseInt(req.body.quanitity),
-    product_id: parseInt(req.body.product_id),
-    order_id: parseInt(req.body.order_id),
+    product_id: req.body.product_id,
+    order_id: req.body.order_id,
   };
   try {
     const ordered = await store.ProductOrdered(productOrder);

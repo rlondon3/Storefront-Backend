@@ -25,7 +25,8 @@ const show = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   const product: Product = {
-    name: req.body.name,
+    title: req.body.title,
+    description: req.body.description,
     price: req.body.price,
   };
   try {
@@ -39,7 +40,8 @@ const create = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
   const product: Product = {
-    name: req.body.name,
+    title: req.body.title,
+    description: req.body.description,
     price: req.body.price,
     id: parseInt(req.params.id),
   };

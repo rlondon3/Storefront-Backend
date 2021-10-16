@@ -1,8 +1,8 @@
-import { Product, ProductStore } from '../products';
+import { ProductStore } from '../products';
 
 const store = new ProductStore();
 
-describe('Legendary Product Model', () => {
+describe('Product Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -25,13 +25,15 @@ describe('Legendary Product Model', () => {
 
   it('create method adds product', async () => {
     const res = await store.create({
-      name: 'Iron Manacles',
-      price: 454.99,
+      title: 'Iron Manacles',
+      description: 'Methods of fighting with iron cuffs.',
+      price: 54.99,
     });
     expect(res).toEqual({
       id: 1,
-      name: 'Iron Manacles',
-      price: 454.99,
+      title: 'Iron Manacles',
+      description: 'Methods of fighting with iron cuffs.',
+      price: '54.99',
     });
   });
 
@@ -40,15 +42,19 @@ describe('Legendary Product Model', () => {
     expect(res).toEqual([
       {
         id: 1,
-        name: 'Iron Manacles',
-        price: 454.99,
+        title: 'Iron Manacles',
+        description: 'Methods of fighting with iron cuffs.',
+        price: '54.99',
       },
     ]);
   });
 
   it('delete method should delete the user', async () => {
-    store.delete(1);
+    await store.delete(1);
     const res = await store.index();
-    expect(res[0].id).toEqual(1);
+    expect(res).toEqual([]);
   });
+  /*  afterAll(async () => {
+    await store.delete(1)
+  }) */
 });

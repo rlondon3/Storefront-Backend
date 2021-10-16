@@ -1,1 +1,1 @@
-CREATE TABLE products_ordered (id SERIAL PRIMARY KEY, order_id bigint REFERENCES orders(id), product_id bigint REFERENCES products(id), quantity integer);
+CREATE TABLE products_ordered (id SERIAL PRIMARY KEY, order_id bigint REFERENCES orders(id) ON DELETE CASCADE, product_id bigint REFERENCES products(id) ON DELETE RESTRICT, quantity integer);
