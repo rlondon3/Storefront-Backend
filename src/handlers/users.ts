@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { User, UserStore } from '../models/user';
 import jwt from 'jsonwebtoken';
-import { authToken, authUserId } from '../middleware/authenticate';
+import { authToken, authUserId } from '../services/authenticate';
 
 dotenv.config();
 
