@@ -36,14 +36,14 @@ POST-	/orders/:id/products	Add product <br>
     
 Data Shapes and Schema
 --------------------------
-**Products** <br>
-(id SERIAL PRIMARY KEY, title VARCHAR(100), description VARCHAR(250), price NUMERIC(5,2));<br>
+**Table: Products** <br>
+Column: id SERIAL PRIMARY KEY, title VARCHAR(100), description VARCHAR(250), price NUMERIC(5,2)<br>
     
- **Orders**   
-(id SERIAL PRIMARY KEY, order_status VARCHAR(100), user_id bigint REFERENCES users(id) ON DELETE CASCADE); <br>
+ **Table: Orders**   
+Column: id SERIAL PRIMARY KEY, order_status VARCHAR(100), user_id bigint REFERENCES users(id) ON DELETE CASCADE; <br>
     
-**Users** <br>
-(id SERIAL PRIMARY KEY, username VARCHAR(100), password VARCHAR(100)); <br>
+**Table: Users** <br>
+Column: id SERIAL PRIMARY KEY, username VARCHAR(100), password VARCHAR(100); <br>
     
-**Products Ordered**<Br>
-products_ordered (id SERIAL PRIMARY KEY, order_id bigint REFERENCES orders(id) ON DELETE CASCADE, product_id bigint REFERENCES products(id) ON DELETE RESTRICT, quantity integer)
+**Table: Products Ordered**<Br>
+Column: id SERIAL PRIMARY KEY, order_id bigint REFERENCES orders(id) ON DELETE CASCADE, product_id bigint REFERENCES products(id) ON DELETE RESTRICT, quantity integer
