@@ -1,9 +1,9 @@
 STORE FRONT BACKEND PROJECT
 =======================================================
-This is a Node and Express APP for a Store front backend API.
+**This is a Node and Express APP for a Store front backend API.**
 
               • This is a backend project for the fullstack javascript Udacity Nanodegree •
-                   Node.js| Express| Typescript| Jasmine | PostgreSQL | JSON Webtoken | Supertest | Bcrypt | Dotenv
+                              Node.js| Express| Typescript| Jasmine | PostgreSQL | JSON Webtoken | Supertest | Bcrypt | Dotenv
  ___________________________________________________________________
 
 OVERVIEW
