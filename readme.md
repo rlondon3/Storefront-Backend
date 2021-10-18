@@ -4,7 +4,7 @@ STORE FRONT BACKEND PROJECT
 
         • This is a backend project for the fullstack javascript Udacity Nanodegree •
       
-        DEVELOPMENT TECHNOLOGY
+                                       DEVELOPMENT TECHNOLOGY
         Node.js| Express| Typescript| Jasmine | PostgreSQL | JSON Webtoken | Supertest | Bcrypt | Dotenv 
  ___________________________________________________________________
 
