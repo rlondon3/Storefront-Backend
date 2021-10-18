@@ -50,7 +50,7 @@ export class ProductStore {
   async update(product: Product): Promise<Product> {
     try {
       const sql =
-        'UPDATE products SET title=($1), description=($2) price=($3) WHERE id=($4) RETURNING *';
+        'UPDATE products SET title=($1), description=($2), price=($3) WHERE id=($4) RETURNING *';
       const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [
         product.title,

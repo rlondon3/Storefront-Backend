@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { Order, OrderStore, ProductOrdered } from '../models/order_products';
+import { Order, OrderStore, ProductOrdered } from '../models/orders';
 
 const store = new OrderStore();
 
@@ -41,7 +41,7 @@ const update = async (req: Request, res: Response) => {
   const order: Order = {
     id: parseInt(req.params.id),
     user_id: req.body.user_id,
-    order_status: 'active',
+    order_status: req.body.order_status,
   };
   try {
     const updateOrder = await store.update(order);
@@ -64,12 +64,12 @@ const deletes = async (req: Request, res: Response) => {
 
 const product = async (req: Request, res: Response) => {
   const productOrder: ProductOrdered = {
-    quantity: parseInt(req.body.quanitity),
+    quantity: parseInt(req.body.quantity),
     product_id: req.body.product_id,
-    order_id: req.body.order_id,
+    order_id: req.params.id,
   };
   try {
-    const ordered = await store.ProductOrdered(productOrder);
+    const ordered = await store.productOrdered(productOrder);
     res.json(ordered);
   } catch (err) {
     res.status(400);

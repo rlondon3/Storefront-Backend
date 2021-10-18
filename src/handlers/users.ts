@@ -60,7 +60,7 @@ const update = async (req: Request, res: Response) => {
       {
         user: updates,
       },
-      process.env.TOKEN_SECRET as jwt.Secret
+      `${process.env.TOKEN_SECRET}` as jwt.Secret
     );
     res.json(token);
   } catch (err) {
@@ -79,19 +79,23 @@ const deletes = async (req: Request, res: Response) => {
   }
 };
 
-const authenticate = async (req: Request, res: Response) => {
+const authenticate = async (req: Request, res: Response): Promise<void> => {
   try {
     const authUser = await store.authenticate(
       req.body.username,
       req.body.password
     );
-    const token = jwt.sign(
-      {
-        user: authUser,
-      },
-      `${process.env.TOKEN_SECRET}` as jwt.Secret
-    );
-    res.json(token);
+    if (authUser === null) {
+      throw new Error('Not Authorized');
+    } else {
+      const token = jwt.sign(
+        {
+          user: authUser,
+        },
+        `${process.env.TOKEN_SECRET}` as jwt.Secret
+      );
+      res.json(token);
+    }
   } catch (err) {
     res.status(400);
     res.json(err);
@@ -99,9 +103,9 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const users_route = (app: express.Application) => {
-  app.get('/users', authToken, index);
-  app.get('/users/:id', show);
-  app.post('/users', create);
+  app.post('/verify/users', authToken, index);
+  app.post('/verify/users/:id', authToken, show);
+  app.post('/create/user', create);
   app.put('/users/:id', authUserId, update);
   app.delete('/users/:id', authUserId, deletes);
   app.post('/users/authenticate', authenticate);

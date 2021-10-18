@@ -51,11 +51,11 @@ export class OrderStore {
     }
   }
 
-  async ProductOrdered(addProduct: ProductOrdered): Promise<ProductOrdered> {
+  async productOrdered(add: ProductOrdered): Promise<ProductOrdered> {
     try {
       const addInSql = 'SELECT * FROM orders WHERE id=($1)';
       const conn: PoolClient = await client.connect();
-      const res = await conn.query(addInSql, [addProduct.order_id]);
+      const res = await conn.query(addInSql, [add.order_id]);
 
       if (res.rows[0].order_status !== 'active') {
         throw Error(`Could not place order. Order status is not active.`);
@@ -69,9 +69,9 @@ export class OrderStore {
         'INSERT INTO products_ordered (order_id, product_id, quanitity) VALUES ($1, $2, $3) RETURNING *';
       const conn = await client.connect();
       const res = await conn.query(sql, [
-        addProduct.order_id,
-        addProduct.product_id,
-        addProduct.quantity,
+        add.order_id,
+        add.product_id,
+        add.quantity,
       ]);
       conn.release();
       return res.rows[0];

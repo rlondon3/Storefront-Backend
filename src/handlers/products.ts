@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Product, ProductStore } from '../models/products';
+import { authToken } from '../middleware/authenticate';
 
 const store = new ProductStore();
 
@@ -42,7 +43,7 @@ const update = async (req: Request, res: Response) => {
   const product: Product = {
     title: req.body.title,
     description: req.body.description,
-    price: req.body.price,
+    price: Number(req.body.price),
     id: parseInt(req.params.id),
   };
   try {
@@ -67,9 +68,9 @@ const deletes = async (req: Request, res: Response) => {
 const products_route = (app: express.Application) => {
   app.get('/products', index);
   app.get('/products/:id', show);
-  app.post('/products', create);
-  app.put('/products/:id', update);
-  app.delete('/products/:id', deletes);
+  app.post('/products', authToken, create);
+  app.put('/update/products/:id', authToken, update);
+  app.delete('/delete/products/:id', authToken, deletes);
 };
 
 export default products_route;

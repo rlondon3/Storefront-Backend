@@ -58,10 +58,10 @@ export class UserStore {
         'UPDATE users SET username=($1), password=($2) WHERE id=($3) RETURNING *';
       const conn: PoolClient = await client.connect();
       const hash = bcrypt.hashSync(
-        usr.password + PEPPER,
-        parseInt(SALT_ROUNDS as unknown as string)
+        usr.password + `${PEPPER}`,
+        parseInt(`${SALT_ROUNDS}` as unknown as string)
       );
-      const res = await conn.query(sql, [usr.username, hash]);
+      const res = await conn.query(sql, [usr.username, hash, usr.id]);
       conn.release();
       return res.rows[0];
     } catch (err) {
@@ -85,11 +85,8 @@ export class UserStore {
       const conn: PoolClient = await client.connect();
       const res = await conn.query(sql, [username]);
       if (res.rows.length) {
-        const user = res.rows[0];
-        console.log(user);
-        if (bcrypt.compareSync(password + PEPPER, user.password)) {
-          return user;
-        }
+        bcrypt.compareSync(password + `${PEPPER}`, res.rows[0].password);
+        return res.rows[0];
       }
       return null;
     } catch (err) {
